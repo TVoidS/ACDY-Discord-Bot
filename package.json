@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/TVoidS/ACDY-Discord-Bot/issues"
   },
-  "homepage": "https://github.com/TVoidS/ACDY-Discord-Bot#readme"
+  "homepage": "https://github.com/TVoidS/ACDY-Discord-Bot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.0",
+    "discord.js-commando": "^0.10.0",
+    "opusscript": "0.0.6"
+  }
 }
