@@ -1,0 +1,19 @@
+{
+  "name": "acdy-discord-bot",
+  "version": "0.0.1",
+  "description": "Discord bot using Discord.js-commando built for the ACDY community",
+  "main": "start.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TVoidS/ACDY-Discord-Bot.git"
+  },
+  "author": "TVoidS",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/TVoidS/ACDY-Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/TVoidS/ACDY-Discord-Bot#readme"
+}
