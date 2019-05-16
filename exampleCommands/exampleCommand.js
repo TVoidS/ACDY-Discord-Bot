@@ -14,8 +14,8 @@ module.exports = class ExampleCommand extends commando.Command {
     constructor(client){
         super(client,{
             name: 'example', // how the command is called
-            group: 'examples', // The group (or folder) that the command is in
-            memberName: 'Example Command', // The name in display of !help (help still has the actual command displayed, but this is the clearer name)
+            group: 'game', // The group (or folder) that the command is in
+            memberName: 'example', 
             description: 'An example command to help show off how commands with Commando work' // The description that appears in the !help command.
             // There are more that I will add as I learn/use them
         })

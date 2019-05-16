@@ -13,9 +13,10 @@ Bot.registry.registerGroup('general', 'General Commands')
 Bot.registry.registerGroup('streaming', 'Streaming Commands')
 Bot.registry.registerGroup('music', 'Music Commands')
 Bot.registry.registerGroup('game', 'Game Helper Commands')
+Bot.registry.registerGroup('moderation', 'Moderator Commands')
 
 Bot.registry.registerDefaults()
-Bot.registry.registerCommandsIn(__dirname + '/commands')
+Bot.registry.registerCommandsIn(path.join(__dirname, 'commands'))
 
 // Global Lists
 // These are lists that *should* affect everything,
