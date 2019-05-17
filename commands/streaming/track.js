@@ -34,43 +34,39 @@ module.exports = class TrackCommand extends commando.Command {
     // It runs when it can, and does exactly what is coded
     async run(message, {streamLink}) {
 
+        // Save location for the tracking info
+        var fileLoc = __dirname + '/../../streamerData/trackedUsers.json'
+
         // This grabs the file from its location to then be parsed
-        var file = fs.readFile(__dirname + '../../../streamerData/trackedUsers.json', 'utf8', function(err, data) {
-            if(err) {
-                console.log(err)
-                throw err
-            }
-            console.log(data)
-            console.log("ending file read")
-        })
+        var file = fs.readFileSync(fileLoc, 'utf8')
         // This actually parses the file
         var trackedUsers = JSON.parse(file)
-
-        console.log(trackedUsers)
 
         // Loads the data into the correct format
 
         // if the guild is documented:
-        if(trackedUsers.guilds[message.channel.guild.id]) {
+        if(trackedUsers[message.channel.guild.id]) {
 
             // and if the user is documented in that guild:
-            if(trackedUsers.guilds[message.channel.guild.id][message.author.id]) {
+            if(trackedUsers[message.channel.guild.id][message.author.id]) {
                 // Add the stream link to the user's list of them
-                trackedUsers.guilds[message.channel.guild.id][message.author.id].links.push(streamLink)
+                trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
             } else {
                 // since the user isn't documented, make the links list and populate it
-                trackedUsers.guilds[message.channel.guild.id][message.author.id] ={links:[streamLink]}
+                trackedUsers[message.channel.guild.id][message.author.id] = {}
+                trackedUsers[message.channel.guild.id][message.author.id].links = new Array()
+                trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
             }
         } else {
             // since the guild isn't documented, create the guild
-            trackedUsers.guilds[message.channel.guild.id] = {}
+            trackedUsers[message.channel.guild.id] = {}
             // and create the user with a populated links list
-            trackedUsers.guilds[message.channel.guild.id][message.author.id] ={links:[streamLink]}
+            trackedUsers[message.channel.guild.id][message.author.id] ={}
+            trackedUsers[message.channel.guild.id][message.author.id].links = new Array()
+            trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
         }
 
-        console.log()
-        console.log(trackedUsers)
-
+        // Try to get the guild from the client, to confirm that it exists
         try{
             var retrievedGuild = this.client.guilds.get(message.channel.guild.id)
         }
@@ -80,21 +76,24 @@ module.exports = class TrackCommand extends commando.Command {
             throw err
         }
 
-        fs.writeFile(__dirname + '../../../streamerData/trackedUsers.json', JSON.stringify(trackedUsers, null, '\t'), (err) => {
-            if(err) {
-                console.log(err)
-                throw err
+        // Turn the object into a JSON string
+        var data = JSON.stringify(trackedUsers, null, '\t')
+
+        // Check if the file exists, and write it
+        fs.exists(fileLoc, function(exists) {
+            if(exists) {
+                fs.writeFile(fileLoc, data, function(err) {
+                    if(err) {
+                        console.log("Failed to save file!")
+                        throw err
+                    } else {
+
+                        console.log("saved tracking for " + message.author.name)
+                        // Notify the user that it started tracking their online status
+                        message.channel.send("Now tracking " + retrievedGuild.members.get(message.author.id).displayName + " at " + streamLink)
+                    }
+                })
             }
-            console.log("file saved! (or at least attempted to be)")
         })
-        console.log(fs.readFileSync(__dirname + '../../../streamerData/trackedUsers.json'))
-
-        // Notify the user that it started tracking their online status
-        message.channel.send("Now tracking " + retrievedGuild.members.get(message.author.id).displayName + " at " + streamLink)
     }
-}
-
-// This function may need to be exported to another file so that it can be handled separately from the commands.
-function trackingUpdate() {
-
 }
