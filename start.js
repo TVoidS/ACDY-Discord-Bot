@@ -16,7 +16,7 @@ Bot.registry.registerGroup('game', 'Game Helper Commands')
 Bot.registry.registerGroup('moderation', 'Moderator Commands')
 
 Bot.registry.registerDefaults()
-Bot.registry.registerCommandsIn(path.join(__dirname, 'commands'))
+Bot.registry.registerCommandsIn(__dirname + '/commands')
 
 // Global Lists
 // These are lists that *should* affect everything,
