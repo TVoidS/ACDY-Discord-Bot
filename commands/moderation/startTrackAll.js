@@ -26,7 +26,7 @@ module.exports = class ExampleCommand extends commando.Command {
     // It runs when it can, and does exactly what is coded
     async run(message, args) {
         
-        loopLoc.startLoop(3000)
+        loopLoc.startLoop(9000)
         message.channel.send("Loop started")
     }
 }
