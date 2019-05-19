@@ -6,6 +6,12 @@ const request = require('request')
 // Therefore it will not be shared.
 const CLIENTID = require(__dirname + '/../token.js').CLIENTID
 
+// Required for file reading and output
+const fs = require('fs')
+
+// Required for Embeds
+const RichEmbed = require('Discord.js')
+
 // This is the base link for the Twitch Helix API.
 // It is used whenever I need to request the state of a particular user's stream.
 var baseLink = 'https://api.twitch.tv/helix/streams'
@@ -13,8 +19,13 @@ var baseLink = 'https://api.twitch.tv/helix/streams'
 // This is the link to the streamer data
 const fileLoc = __dirname + '/trackedUsers.json'
 
+// Stores the client that is fed from initial call
+// Required to grab the guilds and channels by ID
+var commandoClient
+
 // Starts the loop of detection
-function startLoop(delay) {
+function startLoop(delay, client) {
+    commandoClient = client
     setInterval(function() {
         begin()
     }, delay)
@@ -38,33 +49,43 @@ var options = {
     }
 }
 
+var guildKey
+var key
+
 // The callback function for the HTTP request.
 // Separated for readability
 // This handles what to do with the returned JSON data.
-function callback(error, response, body) {
-    if(!error && response.statusCode == 200) {
-        var info = JSON.parse(body)
+// function callback(error, response, body) {
+//     if(!error && response.statusCode == 200) {
+//         var info = JSON.parse(body)
 
-        if(info.data[0]){
-            // Represents the data array in the response field
-            var info = JSON.parse(body).data[0]
+//         if(info.data[0]){
+//             // Represents the data array in the response field
+//             var info = JSON.parse(body).data[0]
+//             console.log('\n')
+//             console.log(info)
+//             console.log('\n')
 
-            // The start time of the stream that was pinged.
-            var streamDate = new Date(info.started_at).getTime()
-            var currDate = new Date().getTime()
+//             // The start time of the stream that was pinged.
+//             var streamDate = new Date(info.started_at).getTime()
+//             var currDate = new Date().getTime()
 
-            console.log('\nThe Date() version of the same information:')
-            console.log("Stream Start Time: " + new Date(info.started_at).getTime())
-            console.log("Current Time: " + new Date().getTime())
-            console.log("Time Difference: " + (currDate - streamDate))
+//             console.log('\nThe Date() version of the same information:')
+//             console.log("Stream Start Time: " + new Date(info.started_at).getTime())
+//             console.log("Current Time: " + new Date().getTime())
+//             console.log("Time Difference: " + (currDate - streamDate))
             
-            // Check if stream went live recently
-            if(currDate - streamDate < 10000) {
+//             // Check if stream went live recently
+//             if(currDate - streamDate < 12190620) {
                 
-            } // if it didn't, don't ping anyone
-        }
-    }
-}
+//                 var embed = new RichEmbed.RichEmbed()
+//                 .addField(info.user_name + ' just went live!', 'twitch.tv/' + info.user_name)
+
+//                 commandoClient.guilds.get(this.key).channels.get(this.guildKey).sendEmbed(embed)
+//             } // if it didn't, don't ping anyone
+//         }
+//     }
+// }
 
 // This grabs the list of usernames to test for live status.
 function grabUsernames() {
@@ -78,22 +99,60 @@ function grabUsernames() {
     for(i=0; i<keys.length; i++) {
         // This will go through each guild
         // trackedUsers[keys[i]] should be the guildID, which can then be used to send a message to that guild.
+        var guildKeys = Object.keys(trackedUsers[keys[i]])
+
+        for(j=0; j<guildKeys.length; j++) {
+            
+            for(k=0; k<trackedUsers[keys[i]][guildKeys[j]].length; k++) {
+                key = keys[i]
+                guildKey = guildKeys[j]
+                var username = trackedUsers[keys[i]][guildKeys[j]][k]
+                request(baseLink + '?user_login=' + username, options, function (error, response, body) {
+                    if(!error && response.statusCode == 200) {
+                        var info = JSON.parse(body)
+                        
+                        if(info.data[0]){
+                            // Represents the data array in the response field
+                            var info = JSON.parse(body).data[0]
+                            console.log('\n')
+                            console.log(info)
+                            console.log('\n')
+                
+                            // The start time of the stream that was pinged.
+                            var streamDate = new Date(info.started_at).getTime()
+                            var currDate = new Date().getTime()
+                
+                            console.log('\nThe Date() version of the same information:')
+                            console.log("Stream Start Time: " + new Date(info.started_at).getTime())
+                            console.log("Current Time: " + new Date().getTime())
+                            console.log("Time Difference: " + (currDate - streamDate))
+                            
+                            // Check if stream went live recently
+                            if(currDate - streamDate < 9050) {
+                                
+                                commandoClient.guilds.get(key).channels.get(guildKey).send(info.user_name + ' just went live!')
+                                commandoClient.guilds.get(key).channels.get(guildKey).send('https://www.twitch.tv/' + info.user_name)
+                            } // if it didn't, don't ping anyone
+                        }
+                    }
+                })
+            }
+        }
     }
 }
 
 // This function requests the status of the stream based on the login info
-function requestStatus(login) {
+function requestStatus(login, key, guildKey) {
     request(baseLink + '?user_login=' + login, options, callback)
 }
 
 // This is the beginning of all of functions
 
 function begin() {
-    trackedUsernames = new Array()
-    trackedUsernames.push(grabUsernames())
+    grabUsernames()
 }
 
 function grabFirstKey(obj) {
-    var keys = Object.keys(obj)
-    return keys[0]
+    var fkeys = Object.keys(obj)
+    return fkeys[0]
 }

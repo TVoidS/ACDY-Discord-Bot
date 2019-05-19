@@ -47,7 +47,7 @@ module.exports = class TrackCommand extends commando.Command {
             // Then there is a channel to output to
             var keys = Object.keys(trackedUsers[message.channel.guild.id])
 
-            trackedUsers[message.channel.guild.id][keys[0]].users.push(TwitchUsername)
+            trackedUsers[message.channel.guild.id][keys[0]].push(TwitchUsername)
 
             // Turn the object into a JSON string
             var data = JSON.stringify(trackedUsers, null, '\t')
@@ -61,7 +61,7 @@ module.exports = class TrackCommand extends commando.Command {
                             throw err
                         } else {
 
-                            console.log("saved tracking for " + message.author.name)
+                            console.log("saved tracking for " + TwitchUsername)
                             // Notify the user that it started tracking their online status
                             message.channel.send("Now tracking " + TwitchUsername)
                         }

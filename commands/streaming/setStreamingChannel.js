@@ -45,12 +45,12 @@ module.exports = class ExampleCommand extends commando.Command {
                 delete trackedUsers[message.channel.guild.id][Object.keys(trackedUsers[message.channel.guild.id])[0]]
                 trackedUsers[message.channel.guild.id][message.channel.id] = temp
             } else {
-                trackedUsers[message.channel.guild.id][message.channel.id].users = new Array()
+                trackedUsers[message.channel.guild.id][message.channel.id] = new Array()
             }
         } else {
             trackedUsers[message.channel.guild.id] = {}
-            trackedUsers[message.channel.guild.id][message.channel.id] = {}
-            trackedUsers[message.channel.guild.id][message.channel.id].users = new Array()
+            trackedUsers[message.channel.guild.id][message.channel.id] = new Array()
+            
         }
 
         // Turn the object into a JSON string

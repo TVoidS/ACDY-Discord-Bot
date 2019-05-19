@@ -26,7 +26,7 @@ module.exports = class ExampleCommand extends commando.Command {
     // It runs when it can, and does exactly what is coded
     async run(message, args) {
         if(message.author.tag === 'TVoidS#9903'){
-            loopLoc.startLoop(9000)
+            loopLoc.startLoop(9000, this.client)
             message.channel.send("Loop started")
         } else {
             message.channel.send("You don't have the permissions for that!  Only my owner is allowed to use that command!")
