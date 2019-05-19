@@ -3,6 +3,8 @@
 const commando = require('discord.js-commando')
 const fs = require('fs')
 
+// Save location for the tracking info
+const fileLoc = __dirname + '/../../streamerData/trackedUsers.json'
 
 // This sets up and exports the command class
 // module.exports is what allows it to be used outside of this file
@@ -21,8 +23,8 @@ module.exports = class TrackCommand extends commando.Command {
             description: 'An example command to help show off how commands with Commando work', // The description that appears in the !help command.
             args: [
                 {
-                    key: 'streamLink',
-                    prompt: 'The link to where your stream will be hosted',
+                    key: 'TwitchUsername',
+                    prompt: 'Your username on twitch (e.g. LobosJr or Amrenos)',
                     type: 'string'
                 }
             ],
@@ -32,10 +34,7 @@ module.exports = class TrackCommand extends commando.Command {
     
     // This is what the command actually does
     // It runs when it can, and does exactly what is coded
-    async run(message, {streamLink}) {
-
-        // Save location for the tracking info
-        var fileLoc = __dirname + '/../../streamerData/trackedUsers.json'
+    async run(message, {TwitchUsername}) {
 
         // This grabs the file from its location to then be parsed
         var file = fs.readFileSync(fileLoc, 'utf8')
@@ -43,57 +42,35 @@ module.exports = class TrackCommand extends commando.Command {
         var trackedUsers = JSON.parse(file)
 
         // Loads the data into the correct format
-
         // if the guild is documented:
         if(trackedUsers[message.channel.guild.id]) {
+            // Then there is a channel to output to
+            var keys = Object.keys(trackedUsers[message.channel.guild.id])
 
-            // and if the user is documented in that guild:
-            if(trackedUsers[message.channel.guild.id][message.author.id]) {
-                // Add the stream link to the user's list of them
-                trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
-            } else {
-                // since the user isn't documented, make the links list and populate it
-                trackedUsers[message.channel.guild.id][message.author.id] = {}
-                trackedUsers[message.channel.guild.id][message.author.id].links = new Array()
-                trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
-            }
+            trackedUsers[message.channel.guild.id][keys[0]].users.push(TwitchUsername)
+
+            // Turn the object into a JSON string
+            var data = JSON.stringify(trackedUsers, null, '\t')
+
+            // Check if the file exists, and write it
+            fs.exists(fileLoc, function(exists) {
+                if(exists) {
+                    fs.writeFile(fileLoc, data, function(err) {
+                        if(err) {
+                            console.log("Failed to save file!")
+                            throw err
+                        } else {
+
+                            console.log("saved tracking for " + message.author.name)
+                            // Notify the user that it started tracking their online status
+                            message.channel.send("Now tracking " + TwitchUsername)
+                        }
+                    })
+                }
+            })
         } else {
-            // since the guild isn't documented, create the guild
-            trackedUsers[message.channel.guild.id] = {}
-            // and create the user with a populated links list
-            trackedUsers[message.channel.guild.id][message.author.id] ={}
-            trackedUsers[message.channel.guild.id][message.author.id].links = new Array()
-            trackedUsers[message.channel.guild.id][message.author.id].links.push(streamLink)
+            //  Only an admin can set the channel
+            message.channel.send("There hasn't been a channel set to output notifications!  Please have an admin do !streamchannel in the channel that you want notifications to set the channel")
         }
-
-        // Try to get the guild from the client, to confirm that it exists
-        try{
-            var retrievedGuild = this.client.guilds.get(message.channel.guild.id)
-        }
-        catch (err) {
-            console.log("broke on retrieving guild")
-            console.log(err)
-            throw err
-        }
-
-        // Turn the object into a JSON string
-        var data = JSON.stringify(trackedUsers, null, '\t')
-
-        // Check if the file exists, and write it
-        fs.exists(fileLoc, function(exists) {
-            if(exists) {
-                fs.writeFile(fileLoc, data, function(err) {
-                    if(err) {
-                        console.log("Failed to save file!")
-                        throw err
-                    } else {
-
-                        console.log("saved tracking for " + message.author.name)
-                        // Notify the user that it started tracking their online status
-                        message.channel.send("Now tracking " + retrievedGuild.members.get(message.author.id).displayName + " at " + streamLink)
-                    }
-                })
-            }
-        })
     }
 }

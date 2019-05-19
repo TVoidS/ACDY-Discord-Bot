@@ -10,10 +10,13 @@ const CLIENTID = require(__dirname + '/../token.js').CLIENTID
 // It is used whenever I need to request the state of a particular user's stream.
 var baseLink = 'https://api.twitch.tv/helix/streams'
 
+// This is the link to the streamer data
+const fileLoc = __dirname + '/trackedUsers.json'
+
 // Starts the loop of detection
 function startLoop(delay) {
     setInterval(function() {
-        requestStatus()
+        begin()
     }, delay)
 }
 
@@ -65,7 +68,17 @@ function callback(error, response, body) {
 
 // This grabs the list of usernames to test for live status.
 function grabUsernames() {
+    // This grabs the file from its location to then be parsed
+    var file = fs.readFileSync(fileLoc, 'utf8')
+    // This actually parses the file
+    var trackedUsers = JSON.parse(file)
 
+    var keys = Object.keys(trackedUsers)
+
+    for(i=0; i<keys.length; i++) {
+        // This will go through each guild
+        // trackedUsers[keys[i]] should be the guildID, which can then be used to send a message to that guild.
+    }
 }
 
 // This function requests the status of the stream based on the login info
@@ -78,4 +91,9 @@ function requestStatus(login) {
 function begin() {
     trackedUsernames = new Array()
     trackedUsernames.push(grabUsernames())
+}
+
+function grabFirstKey(obj) {
+    var keys = Object.keys(obj)
+    return keys[0]
 }
