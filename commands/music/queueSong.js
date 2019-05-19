@@ -62,11 +62,22 @@ class QueueSongCommand extends commando.Command {
                     .then(connection => {
                         message.channel.send('Joined!');
                         servers[message.guild.id].queue.push(inputURL);
+                        message.channel.send('Song added to queue!');
                         Play(connection, message);
                     });
+                } else {
+                    if(servers[message.guild.id].queue.length < 1) {
+                        message.member.voiceChannel.join()
+                        .then(connection => {
+                            servers[message.guild.id].queue.push(inputURL);
+                            message.channel.send('Song added to queue!');  
+                            Play(connection, message);
+                        });
+                    } else {
+                        servers[message.guild.id].queue.push(inputURL);
+                        message.channel.send('Song added to queue!');
+                    }
                 }
-                servers[message.guild.id].queue.push(inputURL);
-                message.channel.send('Song added to queue!');
             }
         } else {
             message.channel.send('You need to be in a voice chat for me to accept you!');
