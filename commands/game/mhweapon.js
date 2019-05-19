@@ -186,7 +186,7 @@ module.exports = class mhWeaponSelector extends commando.Command {
         
 
         // example message output
-        message.channel.sendEmbed(embed)
+        message.channel.send(embed)
     }
 }
 
