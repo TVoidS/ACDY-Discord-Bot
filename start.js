@@ -38,9 +38,10 @@ Bot.once("ready", () => {
 Bot.on('error', console.error)
 
 // Welcome to the server test message to verify functionality
-Bot.on("guildMemberAdd", (member) => {
-    member.guild.channels.find(channel => channel.name === "welcome").send("Welcome to Ascendency, " + member.user)
-})
+// This method causes crashes if there isn't a "welcome" text channel in the guild.
+// Bot.on("guildMemberAdd", (member) => {
+//     member.guild.channels.find(channel => channel.name === "welcome").send("Welcome to Ascendency, " + member.user)
+// })
 
 // Tells the bot to connect using teh token stored in token.js
 // token.js WILL NOT BE INCLUDED in any distribution of this code,
