@@ -3,3 +3,6 @@ token.js
 
 # ignore the node_modules directory
 node_modules
+
+# ignore the trackedUsers.json file
+streamData/trackedUsers.json
