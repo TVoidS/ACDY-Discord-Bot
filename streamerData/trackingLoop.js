@@ -114,21 +114,23 @@ function grabUsernames() {
                         if(info.data[0]){
                             // Represents the data array in the response field
                             var info = JSON.parse(body).data[0]
-                            console.log('\n')
-                            console.log(info)
-                            console.log('\n')
                 
                             // The start time of the stream that was pinged.
                             var streamDate = new Date(info.started_at).getTime()
+                            
                             var currDate = new Date().getTime()
-                
-                            console.log('\nThe Date() version of the same information:')
+
+                            var difference = currDate - streamDate
+
+                            console.log('\n' + info.user_name + ' is live!')
                             console.log("Stream Start Time: " + new Date(info.started_at).getTime())
                             console.log("Current Time: " + new Date().getTime())
-                            console.log("Time Difference: " + (currDate - streamDate))
+                            console.log("Time Difference: " + difference)
+                            console.log("In Sec: " + (difference/1000))
+                            console.log("In Min: " + (difference/60000))
                             
                             // Check if stream went live recently
-                            if(currDate - streamDate < 9050) {
+                            if(difference < 120000) {
                                 
                                 commandoClient.guilds.get(key).channels.get(guildKey).send(info.user_name + ' just went live!')
                                 commandoClient.guilds.get(key).channels.get(guildKey).send('https://www.twitch.tv/' + info.user_name)

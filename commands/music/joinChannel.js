@@ -5,6 +5,7 @@
  * Most likely, it will have it's functionality removed before the final version of the bot.
  */
 
+ /*
 const commando = require('discord.js-commando');
 
 class JoinChannelCommand extends commando.Command {
@@ -34,3 +35,4 @@ class JoinChannelCommand extends commando.Command {
 }
 
 module.exports = JoinChannelCommand;
+*/

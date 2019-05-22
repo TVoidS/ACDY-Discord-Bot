@@ -66,7 +66,7 @@ class QueueSongCommand extends commando.Command {
                         Play(connection, message);
                     });
                 } else {
-                    if(servers[message.guild.id].queue.length < 1) {
+                    if(servers[message.guild.id].queue.length === -1) {
                         message.member.voiceChannel.join()
                         .then(connection => {
                             servers[message.guild.id].queue.push(inputURL);
