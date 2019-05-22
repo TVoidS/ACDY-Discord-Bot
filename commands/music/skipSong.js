@@ -14,8 +14,9 @@ class LeaveChannelCommand extends commando.Command {
     async run(message, args) {
         if(message.guild.voiceConnection) { // only even try to do stuff if you have a voice connection.
             // servers[message.guild.id].dispatcher.end();
-            if(servers[message.guild.id]) { // if there is a song queue for the server...
-                servers[message.guild.id].dispatcher.end(); // end the current song.
+            if(servers[message.guild.id].queue.length > -1) { // if there is a song queue for the server...
+                // servers[message.guild.id].dispatcher.end(); // end the current song.
+                message.guild.voiceConnection.dispatcher.end(); // same as above, but more guaranteed?
                 message.channel.send('Song skipped!'); // and tell them ! :D
             }
         }
