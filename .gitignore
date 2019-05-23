@@ -2,7 +2,7 @@
 token.js
 
 # ignore the node_modules directory
-node_modules
+/node_modules
 
-# ignore the trackedUsers.json file
-streamData/trackedUsers.json
+# ignore the all of the streamerData directory, for the most part
+/streamerData

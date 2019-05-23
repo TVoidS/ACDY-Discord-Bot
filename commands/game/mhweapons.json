@@ -1,0 +1,143 @@
+{
+    "mhw": {
+        "Melee": {
+            "Insect Glaive": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast",
+                    "Paralysis"
+                ]
+            }, 
+            "Greatsword": {
+                "Element": [
+                    "Raw",
+                    "Dragon",
+                    "Sleep"
+                ]
+            }, 
+            "Longsword": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast",
+                    "Paralysis"
+                ]
+            }, 
+            "Lance": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast",
+                    "Paralysis"
+                ]
+            }, 
+            "Sword and Shield": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast",
+                    "Paralysis"
+                ]
+            }, 
+            "Dual Blades": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast",
+                    "Paralysis"
+                ]
+            }, 
+            "Hammer": {
+                "Element": [
+                    "Raw",
+                    "Sleep",
+                    "Paralysis"
+                ]
+            }, 
+            "Hunting Horn": {
+                "Notes": [
+                    "Purple, Red, Blue",
+                    "Purple, Red, Green",
+                    "Purple, Light Blue, Orange",
+                    "Purple, Blue, Green",
+                    "Purple, Green, Orange"
+                ]
+            },
+            "Gunlance": {
+                "Shelling": [
+                    "Long",
+                    "Normal",
+                    "Wide",
+                    "Swing"
+                ]
+            },
+            "Switchaxe": {
+                "Element": [
+                    "Dragon",
+                    "Blast",
+                    "Raw",
+                    "Ice",
+                    "Thunder",
+                    "Water",
+                    "Paralysis"
+                ]
+            },
+            "Charge Blade": {
+                "Element": [
+                    "Sleep",
+                    "Ice",
+                    "Ice",
+                    "Raw",
+                    "Fire",
+                    "Water",
+                    "Thunder",
+                    "Dragon",
+                    "Blast"
+                ]
+            }
+        },
+        "Ranged": {
+            "Bow": {
+                "Coating": [
+                    "Incomplete Data (select your own for now)"
+                ]
+            },
+            "Light Bowgun": {
+                "Ammo": [
+                    "Incomplete Data (select your own for now)"
+                ]
+            },
+            "Heavy Bowgun": {
+                "Ammo": [
+                    "Incomplete Data (select your own for now)"
+                ]
+            }
+        }
+    }
+}
