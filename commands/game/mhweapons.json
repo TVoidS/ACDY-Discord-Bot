@@ -1,5 +1,21 @@
 {
     "mhw": {
+        "All": [
+            ["Sword and Shield", "Melee"],
+            ["Longsword", "Melee"],
+            ["Greatsword", "Melee"],
+            ["Lance", "Melee"],
+            ["Gunlance", "Melee"],
+            ["Switchaxe", "Melee"],
+            ["Chargeblade", "Melee"],
+            ["Hunting Horn", "Melee"],
+            ["Hammer", "Melee"],
+            ["Dual Blades", "Melee"],
+            ["Insect Glaive", "Melee"],
+            ["Light Bowgun", "Ranged"],
+            ["Heavy Bowgun", "Ranged"],
+            ["Bow", "Ranged"]
+        ],
         "Melee": {
             "Insect Glaive": {
                 "Element": [
@@ -137,6 +153,77 @@
                 "Ammo": [
                     "Incomplete Data (select your own for now)"
                 ]
+            }
+        }
+    },
+    "xx": {
+        "All":[
+            ["Sword and Shield", "Melee"],
+            ["Longsword", "Melee"],
+            ["Greatsword", "Melee"],
+            ["Lance", "Melee"],
+            ["Gunlance", "Melee"],
+            ["Switchaxe", "Melee"],
+            ["Chargeblade", "Melee"],
+            ["Hunting Horn", "Melee"],
+            ["Hammer", "Melee"],
+            ["Prowler", "Special"],
+            ["Dual Blades", "Melee"],
+            ["Insect Glaive", "Melee"],
+            ["Light Bowgun", "Ranged"],
+            ["Heavy Bowgun", "Ranged"],
+            ["Bow", "Ranged"]
+        ],
+        "Melee":{
+            "Sword and Shield": {
+
+            },
+            "Longsword":{
+
+            },
+            "Greatsword":{
+
+            },
+            "Lance":{
+
+            },
+            "Gunlance":{
+
+            },
+            "Switchaxe":{
+
+            },
+            "Chargeblade":{
+
+            },
+            "Hunting Horn":{
+
+            },
+            "Hammer":{
+
+            },
+            "Prowler":{
+
+            },
+            "Dual Blades":{
+
+            },
+            "Insect Glaive":{
+
+            }
+        },
+        "Ranged":{
+            "Prowler":{
+
+            },
+            "Light Bowgun":{
+
+            },
+            "Heavy Bowgun":{
+
+            },
+            "Bow":{
+
             }
         }
     }

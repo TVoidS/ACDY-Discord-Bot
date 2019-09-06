@@ -5,7 +5,7 @@ const RichEmbed = require('discord.js')
 const fs = require('fs')
 
 // Object with all weapons and types available
-var allOptions = JSON.parse(fs.readFileSync(__dirname + '/mhweapons.json'))
+var weaponList = JSON.parse(fs.readFileSync(__dirname + '/mhweapons.json'))
 
 // This sets up and exports the command class
 // module.exports is what allows it to be used outside of this file
@@ -26,61 +26,24 @@ module.exports = class mhWeaponSelector extends commando.Command {
             // There are more that I will add as I learn/use them
             args: [
                 {
-                    key: 'arg1',
-                    prompt: 'This can be anything really.  Select either an element, weapon group, or game to help filter your results',
-                    oneOf: [
-                        "any",
-                        "ranged",
-                        "melee",
-                        "sleep",
-                        "ice",
-                        "raw",
-                        "fire",
-                        "water",
-                        "thunder",
-                        "dragon",
-                        "blast",
-                        "paralysis",
-                        "ig",
-                        "insectglaive",
-                        "gs",
-                        "greatsword",
-                        "ls",
-                        "longsword",
-                        "l",
-                        "lance",
-                        "sns",
-                        "swordnshield",
-                        "swordandshield",
-                        "db",
-                        "dualblades",
-                        "h",
-                        "hammer",
-                        "hh",
-                        "huntinghorn",
-                        "gl",
-                        "gunlance",
-                        "sa",
-                        "switchaxe",
-                        "cb",
-                        "chargeblade",
-                        "bow",
-                        "b",
-                        "lb",
-                        "lightbowgun",
-                        "hb",
-                        "heavybowgun"
-                    ],
-                    default: 'any',
-                    type: 'string'
-                },
-                {
                     key:'game',
                     prompt: 'This defaults to mhw, so under a single line entry, you can leave it empty.  Please enter mhw though if you see this prompt',
                     oneOf: [
-                        "mhw"
+                        "mhw",
+                        "xx"
                     ],
                     default: 'mhw',
+                    type: 'string'
+                },
+                {
+                    key: 'type',
+                    prompt: 'Enter any, ranged, or melee',
+                    oneOf: [
+                        "any",
+                        "ranged",
+                        "melee"
+                    ],
+                    default: 'any',
                     type: 'string'
                 }
             ]
@@ -89,7 +52,9 @@ module.exports = class mhWeaponSelector extends commando.Command {
     
     // This is what the command actually does
     // It runs when it can, and does exactly what is coded
-    async run(message, {arg1, game}) {
+    async run(message, {game, type}) {
+
+        /** OLD CODE.  UPDATING
 
         // the string that defines what group you can find the weapon in
         // This is will be filled in the input parsing stage, possibly at generation, if 'any' was selected
@@ -109,78 +74,78 @@ module.exports = class mhWeaponSelector extends commando.Command {
 
         //Check the current game selection: (most likely mhw)
         if(game == 'mhw') {
-            if(arg1 == 'any') {
-                weaponGroup = randomGrab(allOptions[game])
-                weaponType = randomGrab(allOptions[game][weaponGroup])
-                displayModifier = randomGrab(allOptions[game][weaponGroup][weaponType])
+            if(type == 'any') {
+                weaponGroup = randomGrab(weaponList[game])
+                weaponType = randomGrab(weaponList[game][weaponGroup])
+                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
             } 
-            else if(arg1 == 'ranged') {
+            else if(type == 'ranged') {
                 weaponGroup = 'Ranged'
-                weaponType = randomGrab(allOptions[game][weaponGroup])
-                displayModifier = randomGrab(allOptions[game][weaponGroup][weaponType])
+                weaponType = randomGrab(weaponList[game][weaponGroup])
+                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
             }
-            else if(arg1 == 'melee') {
+            else if(type == 'melee') {
                 weaponGroup = 'Melee'
-                weaponType = randomGrab(allOptions.mhw[weaponGroup])
-                displayModifier = randomGrab(allOptions.mhw[weaponGroup][weaponType])
+                weaponType = randomGrab(weaponList.mhw[weaponGroup])
+                displayModifier = randomGrab(weaponList.mhw[weaponGroup][weaponType])
             }
-            else if(arg1 == 'ig' || arg1 == 'insectglaive') {
+            else if(type == 'ig' || type == 'insectglaive') {
                 weaponGroup = 'Melee'
                 weaponType = 'Insect Glaive'
             }
-            else if(arg1 == 'gs' || arg1 == 'greatsword') {
+            else if(type == 'gs' || type == 'greatsword') {
                 weaponGroup = 'Melee'
                 weaponType = 'Greatsword'
             }
-            else if(arg1 == 'ls' || arg1 == 'longsword') {
+            else if(type == 'ls' || type == 'longsword') {
                 weaponGroup = 'Melee'
                 weaponType = 'Longsword'
             }
-            else if(arg1 == 'l' || arg1 == 'lance') {
+            else if(type == 'l' || type == 'lance') {
                 weaponGroup = 'Melee'
                 weaponType = 'Lance'
             }
-            else if(arg1 == 'sns' || arg1 == 'swordnshield' || arg1 == 'swordandshield') {
+            else if(type == 'sns' || type == 'swordnshield' || type == 'swordandshield') {
                 weaponGroup = 'Melee'
                 weaponType = 'Sword and Shield'
             }
-            else if(arg1 == 'db' || arg1 == 'dualblades') {
+            else if(type == 'db' || type == 'dualblades') {
                 weaponGroup = 'Melee'
                 weaponType = 'Dual Blades'
             }
-            else if(arg1 == 'h' || arg1 == 'hammer') {
+            else if(type == 'h' || type == 'hammer') {
                 weaponGroup = 'Melee'
                 weaponType = 'Hammer'
             }
-            else if(arg1 == 'hh' || arg1 == 'huntinghorn') {
+            else if(type == 'hh' || type == 'huntinghorn') {
                 displayModifier = "Notes"
                 weaponGroup = 'Melee'
                 weaponType = 'Hunting Horn'
             }
-            else if(arg1 == 'gl' || arg1 == 'gunlance') {
+            else if(type == 'gl' || type == 'gunlance') {
                 displayModifier = "Shelling"
                 weaponGroup = 'Melee'
                 weaponType = 'Gunlance'
             }
-            else if(arg1 == 'sa' || arg1 == 'switchaxe') {
+            else if(type == 'sa' || type == 'switchaxe') {
                 weaponGroup = 'Melee'
                 weaponType = 'Switchaxe'
             }
-            else if(arg1 == 'cb' || arg1 == 'chargeblade') {
+            else if(type == 'cb' || type == 'chargeblade') {
                 weaponGroup = 'Melee'
                 weaponType = 'Charge Blade'
             }
-            else if(arg1 == 'b' || arg1 == 'bow') {
+            else if(type == 'b' || type == 'bow') {
                 displayModifier = "Coating"
                 weaponGroup = 'Ranged'
                 weaponType = 'Bow'
             }
-            else if(arg1 == 'lb' || arg1 == 'lightbowgun') {
+            else if(type == 'lb' || type == 'lightbowgun') {
                 displayModifier = "Ammo"
                 weaponGroup = 'Ranged'
                 weaponType = 'Light Bowgun'
             }
-            else if(arg1 == 'hb' || arg1 == 'heavybowgun') {
+            else if(type == 'hb' || type == 'heavybowgun') {
                 displayModifier = "Ammo"
                 weaponGroup = 'Ranged'
                 weaponType = 'Heavy Bowgun'
@@ -189,19 +154,19 @@ module.exports = class mhWeaponSelector extends commando.Command {
                 // If it gets here, then it is an element, not a weapon type, and therefore needs to be filtered to the appropriate group...
                 // oof
                 message.channel.send("You selected an element!\nI currently do not support element selection, please be patient!\nI'm going to instead generate a random weapon!")
-                weaponGroup = randomGrab(allOptions[game])
-                weaponType = randomGrab(allOptions[game][weaponGroup])
-                displayModifier = randomGrab(allOptions[game][weaponGroup][weaponType])
+                weaponGroup = randomGrab(weaponList[game])
+                weaponType = randomGrab(weaponList[game][weaponGroup])
+                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
             }
         } else {
             console.log("Incorrect input for !mhweapon command! -- WRONG GAME")
             message.channel.send("Incorrect Game! -- Tell the dev that this happned! (it shouldn't).\nGenerating a random weapon regardless")
-            weaponGroup = randomGrab(allOptions[game])
-            weaponType = randomGrab(allOptions[game][weaponGroup])
-            displayModifier = randomGrab(allOptions[game][weaponGroup][weaponType])
+            weaponGroup = randomGrab(weaponList[game])
+            weaponType = randomGrab(weaponList[game][weaponGroup])
+            displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
         }
 
-        var modifiers = allOptions[game][weaponGroup][weaponType][displayModifier]
+        var modifiers = weaponList[game][weaponGroup][weaponType][displayModifier]
         wElement = modifiers[modifiers.length * Math.random() << 0] // The bit shift by 0 drops the decimals
 
         var embed = new RichEmbed.RichEmbed()
@@ -213,7 +178,82 @@ module.exports = class mhWeaponSelector extends commando.Command {
 
         // example message output
         message.channel.send(embed)
+
+        END OLD CODE */
+
+
+
+        /** NEW CODE: */
+
+        // Select Game
+        if(game == 'mhw' || game == 'xx') {
+
+            let weapon = selectWeapon(game, type)
+
+            sendWeapon(message, game, weapon.wgroup, weapon.wtype)
+
+        } else {
+            
+            console.log("Incorrect input for !mhweapon command! -- INVALID GAME")
+            message.channel.send("Invalid Game! -- Tell the dev that this happned! (it shouldn't).\nGenerating a random weapon regardless")
+
+            let weapon = selectWeapon('mhw','any')
+
+            sendWeapon(message, game, weapon.wgroup, weapon.wtype)
+        }
     }
+}
+
+/** selectWeapon
+ * This function will take the game and type input and return the weapon selection as an object
+ * 
+ * @param {*} game - The game that the weapon is supposed to be selected from
+ * @param {*} type - The type of weapon (Options: Any, Ranged, Melee)
+ */
+function selectWeapon(game, type) {
+
+    // the string that defines what group you can find the weapon in
+    // This is will be filled in the input parsing stage, possibly at generation, if 'any' was selected
+    let weaponGroup = "" 
+
+    // The string that specifies what weapon it is (e.g. lance)
+    // it will also be filled in the parsing stage, possibly at generation, if 'any' was selected
+    let weaponType = ""
+
+    if(type == 'ranged') {
+        // Select a ranged weapon
+        //
+        weaponGroup = "Ranged"
+        weaponType = randomGrab(weaponList[game][weaponGroup])
+    } else if (type == 'melee') {
+        // Select a melee weapon
+        //
+        weaponGroup = "Melee"
+        weaponType = randomGrab(weaponList[game][weaponGroup])
+    } else {
+        // assuming 'any'
+        //
+        let anyWeaponTempArr = randomItem(weaponList[game]["All"])
+        weaponGroup = anyWeaponTempArr[1] // The second item is the group the weapon is in (Melee, Ranged, Special)
+        weaponType = anyWeaponTempArr[0] // The first item is the actual weapon itself (e.g. Lance, SnS, Dual Blades)
+    }
+
+    return {wgroup: weaponGroup, wtype: weaponType}
+}
+
+// Assembles and sends the message
+function sendWeapon(message, game, weaponGroup, weaponType) {
+
+    var embed = new RichEmbed.RichEmbed()
+        .addField("Game: ", game)
+        .addField('Weapon Group: ', weaponGroup)
+        .addField('Weapon Type: ', weaponType)
+        //.addField('Weapon ' + displayModifier + ': ', wElement)
+    
+    // Element is being turned off for now.
+
+    // Actual message sending
+    message.channel.send(embed)
 }
 
 // Randomly grabs a key from an object
@@ -230,5 +270,5 @@ function randomGrabObj(obj) {
 
 // Randomly grabs an item from an array
 function randomItem(arr) {
-    return arr[arr.length * Math.random << 0]
+    return arr[arr.length * Math.random() << 0]
 }
