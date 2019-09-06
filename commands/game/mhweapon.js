@@ -54,129 +54,25 @@ module.exports = class mhWeaponSelector extends commando.Command {
     // It runs when it can, and does exactly what is coded
     async run(message, {game, type}) {
 
-        /** OLD CODE.  UPDATING
+        /** OLD ELEMENT CODE.  UPDATING
 
-        // the string that defines what group you can find the weapon in
-        // This is will be filled in the input parsing stage, possibly at generation, if 'any' was selected
-        var weaponGroup = "" 
-
-        // The string that specifies what weapon it is (e.g. lance)
-        // it will also be filled in the parsing stage, possibly at generation, if 'any' was selected
-        var weaponType = ""
-        
         // The element, or modifier.  
         // This will either be filled in the parsing stage or the generation stage
-        var wElement = ""
+        let wElement = ""
 
         // The display that will appear for the item
         // It will be selected when the system knows what the weaponType is, as it is fully dependent on that.
-        var displayModifier = "Element"
+        let displayModifier = "Element"
 
-        //Check the current game selection: (most likely mhw)
-        if(game == 'mhw') {
-            if(type == 'any') {
-                weaponGroup = randomGrab(weaponList[game])
-                weaponType = randomGrab(weaponList[game][weaponGroup])
-                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
-            } 
-            else if(type == 'ranged') {
-                weaponGroup = 'Ranged'
-                weaponType = randomGrab(weaponList[game][weaponGroup])
-                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
-            }
-            else if(type == 'melee') {
-                weaponGroup = 'Melee'
-                weaponType = randomGrab(weaponList.mhw[weaponGroup])
-                displayModifier = randomGrab(weaponList.mhw[weaponGroup][weaponType])
-            }
-            else if(type == 'ig' || type == 'insectglaive') {
-                weaponGroup = 'Melee'
-                weaponType = 'Insect Glaive'
-            }
-            else if(type == 'gs' || type == 'greatsword') {
-                weaponGroup = 'Melee'
-                weaponType = 'Greatsword'
-            }
-            else if(type == 'ls' || type == 'longsword') {
-                weaponGroup = 'Melee'
-                weaponType = 'Longsword'
-            }
-            else if(type == 'l' || type == 'lance') {
-                weaponGroup = 'Melee'
-                weaponType = 'Lance'
-            }
-            else if(type == 'sns' || type == 'swordnshield' || type == 'swordandshield') {
-                weaponGroup = 'Melee'
-                weaponType = 'Sword and Shield'
-            }
-            else if(type == 'db' || type == 'dualblades') {
-                weaponGroup = 'Melee'
-                weaponType = 'Dual Blades'
-            }
-            else if(type == 'h' || type == 'hammer') {
-                weaponGroup = 'Melee'
-                weaponType = 'Hammer'
-            }
-            else if(type == 'hh' || type == 'huntinghorn') {
-                displayModifier = "Notes"
-                weaponGroup = 'Melee'
-                weaponType = 'Hunting Horn'
-            }
-            else if(type == 'gl' || type == 'gunlance') {
-                displayModifier = "Shelling"
-                weaponGroup = 'Melee'
-                weaponType = 'Gunlance'
-            }
-            else if(type == 'sa' || type == 'switchaxe') {
-                weaponGroup = 'Melee'
-                weaponType = 'Switchaxe'
-            }
-            else if(type == 'cb' || type == 'chargeblade') {
-                weaponGroup = 'Melee'
-                weaponType = 'Charge Blade'
-            }
-            else if(type == 'b' || type == 'bow') {
-                displayModifier = "Coating"
-                weaponGroup = 'Ranged'
-                weaponType = 'Bow'
-            }
-            else if(type == 'lb' || type == 'lightbowgun') {
-                displayModifier = "Ammo"
-                weaponGroup = 'Ranged'
-                weaponType = 'Light Bowgun'
-            }
-            else if(type == 'hb' || type == 'heavybowgun') {
-                displayModifier = "Ammo"
-                weaponGroup = 'Ranged'
-                weaponType = 'Heavy Bowgun'
-            }
-            else {
-                // If it gets here, then it is an element, not a weapon type, and therefore needs to be filtered to the appropriate group...
-                // oof
-                message.channel.send("You selected an element!\nI currently do not support element selection, please be patient!\nI'm going to instead generate a random weapon!")
-                weaponGroup = randomGrab(weaponList[game])
-                weaponType = randomGrab(weaponList[game][weaponGroup])
-                displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
-            }
-        } else {
-            console.log("Incorrect input for !mhweapon command! -- WRONG GAME")
-            message.channel.send("Incorrect Game! -- Tell the dev that this happned! (it shouldn't).\nGenerating a random weapon regardless")
-            weaponGroup = randomGrab(weaponList[game])
-            weaponType = randomGrab(weaponList[game][weaponGroup])
-            displayModifier = randomGrab(weaponList[game][weaponGroup][weaponType])
-        }
-
-        var modifiers = weaponList[game][weaponGroup][weaponType][displayModifier]
+        let modifiers = weaponList[game][weaponGroup][weaponType][displayModifier]
         wElement = modifiers[modifiers.length * Math.random() << 0] // The bit shift by 0 drops the decimals
 
-        var embed = new RichEmbed.RichEmbed()
+        let embed = new RichEmbed.RichEmbed()
         .addField("Game: ", game)
         .addField('Weapon Group: ', weaponGroup)
         .addField('Weapon Type: ', weaponType)
         .addField('Weapon ' + displayModifier + ': ', wElement)
         
-
-        // example message output
         message.channel.send(embed)
 
         END OLD CODE */
